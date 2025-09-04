@@ -1,8 +1,12 @@
+
+import { useState, useEffect } from "react";
+import LoadingScreen from "../components/LoadingScreen";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const ResultPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
   const score = location.state?.score ?? 0;
   const total = location.state?.total ?? 0;
   const questions = location.state?.questions || [];
@@ -12,9 +16,16 @@ const ResultPage = () => {
   const correctCount = score;
   const wrongCount = total - score;
 
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   function handleRestart() {
     navigate("/");
   }
+
+  if (loading) return <LoadingScreen />;
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 py-8 px-2">
@@ -78,7 +89,7 @@ const ResultPage = () => {
                   <div className="ml-2">
                     <div className="mb-1">
                       <span className="font-semibold text-purple-800">
-                        Your answer:{" "}
+                        Your answer: {" "}
                       </span>
                       <span
                         className={
@@ -98,7 +109,7 @@ const ResultPage = () => {
                     {!isCorrect && (
                       <div>
                         <span className="font-semibold text-purple-800">
-                          Correct answer:{" "}
+                          Correct answer: {" "}
                         </span>
                         <span className="text-green-600 font-semibold">
                           {q.correctAnswer}
@@ -107,7 +118,7 @@ const ResultPage = () => {
                     )}
                     <div className="mt-2">
                       <span className="font-semibold text-purple-800">
-                        Options:{" "}
+                        Options: {" "}
                       </span>
                       <span className="text-purple-700">
                         {q.options.join(", ")}
