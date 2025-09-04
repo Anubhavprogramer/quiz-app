@@ -1,6 +1,8 @@
 
-import React, { useEffect, useState } from 'react';
+
 import { useLocation, useNavigate } from 'react-router-dom';
+import ProgressBar from '../components/ProgressBar';
+import { useEffect, useState } from 'react';
 import { fetchQuizData } from '../data/fetchQuestion';
 
 const QuizPage = () => {
@@ -60,7 +62,7 @@ const QuizPage = () => {
   return (
     <div className="p-6 max-w-xl mx-auto">
       <h1 className="text-2xl font-bold mb-4">Quiz App</h1>
-      <div className="mb-4">Question {current + 1} of {questions.length}</div>
+      <ProgressBar current={current} total={questions.length} />
       <div className="mb-6">
         <h2 className="font-semibold mb-2">{currentQ.question}</h2>
         <ul>
@@ -81,7 +83,6 @@ const QuizPage = () => {
             {selected === currentQ.correctAnswer ? (
               <span className="text-green-600 font-semibold">Correct!</span>
             ) : (
-                
               <span className="text-red-600 font-semibold">Incorrect. Correct answer: {currentQ.correctAnswer}</span>
             )}
           </div>
