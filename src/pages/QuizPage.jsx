@@ -9,7 +9,9 @@ import { fetchQuizData } from '../data/fetchQuestion';
 const QuizPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const difficulty = location.state?.difficulty || 'not set';
+  const difficulty = location.state?.difficulty || '';
+  const category = location.state?.category || '';
+  const amount = location.state?.amount || 5;
 
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -23,7 +25,13 @@ const QuizPage = () => {
     let isMounted = true;
     async function loadQuiz() {
       setLoading(true);
-      const quizData = await fetchQuizData(difficulty);
+      const quizData = await fetchQuizData({
+        amount,
+        category,
+        difficulty,
+        type: 'multiple',
+        encoding: '',
+      });
       if (isMounted) {
         setQuestions(quizData); // Always replace, never append
         setCurrent(0); // Reset to first question if difficulty changes
@@ -36,7 +44,7 @@ const QuizPage = () => {
     }
     loadQuiz();
     return () => { isMounted = false; };
-  }, [difficulty]);
+  }, [amount, category, difficulty]);
 
   if (loading) return <p>Loading quiz...</p>;
   if (!questions.length) return <p>No questions found.</p>;

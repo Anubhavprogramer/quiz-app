@@ -1,8 +1,29 @@
 // utils/fetchQuizData.js
-export async function fetchQuizData(difficulty = "") {
+/**
+ * Fetch quiz data from Open Trivia DB with full customization.
+ * @param {Object} options
+ * @param {number} [options.amount=5] - Number of questions (max 50)
+ * @param {string} [options.category] - Category ID (optional)
+ * @param {string} [options.difficulty] - Difficulty (easy|medium|hard)
+ * @param {string} [options.type] - Type (multiple|boolean)
+ * @param {string} [options.encoding] - Encoding (default|urlLegacy|url3986|base64)
+ * @param {string} [options.token] - Session token (optional)
+ */
+export async function fetchQuizData({
+  amount = 5,
+  category = '',
+  difficulty = '',
+  type = 'multiple',
+  encoding = '',
+  token = '',
+} = {}) {
   try {
-    // Example API (Open Trivia DB)
-    let url = `https://opentdb.com/api.php?amount=2&category=18&difficulty=${difficulty}&type=multiple`;
+    let url = `https://opentdb.com/api.php?amount=${amount}`;
+    if (category) url += `&category=${category}`;
+    if (difficulty) url += `&difficulty=${difficulty}`;
+    if (type) url += `&type=${type}`;
+    if (encoding) url += `&encode=${encoding}`;
+    if (token) url += `&token=${token}`;
 
     const response = await fetch(url);
     if (!response.ok) {
@@ -10,6 +31,19 @@ export async function fetchQuizData(difficulty = "") {
     }
 
     const data = await response.json();
+
+    // Handle API response codes
+    if (data.response_code === 1) {
+      throw new Error('No results: Not enough questions for your query.');
+    } else if (data.response_code === 2) {
+      throw new Error('Invalid parameter: Check your query parameters.');
+    } else if (data.response_code === 3) {
+      throw new Error('Token not found.');
+    } else if (data.response_code === 4) {
+      throw new Error('Token empty: All possible questions returned.');
+    } else if (data.response_code === 5) {
+      throw new Error('Rate limit: Too many requests.');
+    }
 
     // Transform into cleaner format if needed
     const formattedQuestions = data.results.map((q) => ({
