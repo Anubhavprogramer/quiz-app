@@ -12,8 +12,8 @@ const QuestionCard = ({
 	total
 }) => {
 	return (
-		<div className="mb-4 p-4 rounded-lg bg-zinc-800 border border-zinc-700">
-			<h2 className="font-semibold text-lg text-white mb-2">
+		<div className="mb-4 p-4 rounded-lg bg-transparent">
+			<h2 className="font-semibold text-lg text-purple-900 mb-2">
 				Q{qNumber} of {total}: {question}
 			</h2>
 			<ul>
@@ -25,7 +25,7 @@ const QuestionCard = ({
 									? option === correctAnswer
 										? 'bg-green-600 text-white border-green-600'
 										: 'bg-red-600 text-white border-red-600'
-									: 'bg-zinc-100 text-black hover:bg-zinc-200 border-zinc-300'}
+									: 'bg-zinc-100 text-purple-900 hover:bg-zinc-200 border-zinc-300'}
 							`}
 							onClick={() => !showAnswer && onSelect(option)}
 							disabled={showAnswer}

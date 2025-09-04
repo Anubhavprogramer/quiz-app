@@ -1,8 +1,7 @@
-
-
 import { useLocation, useNavigate } from 'react-router-dom';
 import ProgressBar from '../components/ProgressBar';
 import QuestionCard from '../components/QuestionCard';
+import LoadingScreen from '../components/LoadingScreen';
 import { useEffect, useState } from 'react';
 import { fetchQuizData } from '../data/fetchQuestion';
 
@@ -33,8 +32,8 @@ const QuizPage = () => {
         encoding: '',
       });
       if (isMounted) {
-        setQuestions(quizData); // Always replace, never append
-        setCurrent(0); // Reset to first question if difficulty changes
+        setQuestions(quizData);
+        setCurrent(0);
         setSelected(null);
         setShowAnswer(false);
         setScore(0);
@@ -46,8 +45,8 @@ const QuizPage = () => {
     return () => { isMounted = false; };
   }, [amount, category, difficulty]);
 
-  if (loading) return <p>Loading quiz...</p>;
-  if (!questions.length) return <p>No questions found.</p>;
+  if (loading) return <LoadingScreen />;
+  if (!questions.length) return <p className="text-purple-200">No questions found.</p>;
 
   const currentQ = questions[current];
 
@@ -70,7 +69,6 @@ const QuizPage = () => {
       setSelected(null);
       setShowAnswer(false);
     } else {
-      // Go to result page with all data
       navigate('/result', {
         state: {
           score,
@@ -83,10 +81,14 @@ const QuizPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col items-center justify-center py-8 px-2">
-      <div className="w-full max-w-xl bg-zinc-900 rounded-xl shadow-lg p-8 border border-zinc-800">
-        <h1 className="text-3xl font-extrabold mb-6 text-center text-white tracking-tight">Quiz App</h1>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 flex flex-col items-center justify-center py-8 px-2">
+      <div className="w-full max-w-xl bg-gradient-to-br from-purple-200 via-purple-100 to-purple-300 rounded-3xl shadow-2xl p-8 border border-purple-400">
+        <h1 className="text-3xl font-extrabold mb-6 text-center text-purple-900 tracking-tight">
+          Quiz App
+        </h1>
+
         <ProgressBar current={current} total={questions.length} />
+
         <div className="mb-8">
           <QuestionCard
             question={currentQ.question}
@@ -99,8 +101,11 @@ const QuizPage = () => {
             total={questions.length}
           />
         </div>
+
+        
+
         <button
-          className="bg-white text-black px-6 py-2 rounded shadow hover:bg-zinc-200 transition font-semibold w-full text-lg disabled:opacity-50"
+          className="bg-gradient-to-r from-purple-700 to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:from-indigo-600 hover:to-purple-600 transition font-bold w-full text-lg disabled:opacity-50"
           onClick={handleNext}
           disabled={!showAnswer}
         >

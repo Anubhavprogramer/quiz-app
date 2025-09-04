@@ -13,68 +13,105 @@ const ResultPage = () => {
   const wrongCount = total - score;
 
   function handleRestart() {
-    navigate('/');
+    navigate("/");
   }
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-black py-8 px-2">
-      <div className="w-full max-w-2xl bg-zinc-900 rounded-xl shadow-lg p-8 mb-8 mt-8 border border-zinc-800">
-        <h1 className="text-4xl font-extrabold mb-2 text-center text-white tracking-tight">Quiz Results</h1>
-        <div className="flex flex-col md:flex-row justify-center items-center gap-6 mb-6">
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-indigo-900 py-8 px-2">
+      <div className="w-full max-w-2xl bg-gradient-to-br from-purple-200 via-purple-100 to-purple-300 rounded-3xl shadow-2xl p-8 mb-8 mt-8 border border-purple-400">
+        <h1 className="text-4xl font-extrabold mb-6 text-center text-purple-900 tracking-tight">
+          Quiz Results
+        </h1>
+
+        {/* Score Summary */}
+        <div className="flex flex-col w-full md:flex-row justify-evenly items-center gap-6 mb-6">
           <div className="flex flex-col items-center">
-            <span className="text-5xl font-bold text-white">{score}</span>
-            <span className="text-lg text-zinc-400">Score</span>
+            <span className="text-3xl font-extrabold text-purple-900">{score}</span>
+            <span className="text-lg text-purple-700">Score</span>
           </div>
           <div className="flex flex-col items-center">
-            <span className="text-3xl font-bold text-white">{percent}%</span>
-            <span className="text-lg text-zinc-400">Accuracy</span>
+            <span className="text-3xl font-bold text-purple-800">{percent}%</span>
+            <span className="text-lg text-purple-700">Accuracy</span>
           </div>
-          <div className="flex flex-col items-center">
-            <span className="text-2xl font-bold text-green-400">{correctCount}</span>
-            <span className="text-sm text-zinc-400">Correct</span>
-            <span className="text-2xl font-bold text-red-400">{wrongCount}</span>
-            <span className="text-sm text-zinc-400">Wrong</span>
-          </div>
+            <div className="flex flex-col items-center">
+              <span className="text-3xl font-bold text-green-600">{correctCount}</span>
+              <span className="text-sm text-purple-700">Correct</span>
+            </div>
+            <div className="flex flex-col items-center">
+              <span className="text-3xl font-bold text-yellow-500">{wrongCount}</span>
+              <span className="text-sm text-purple-700">Wrong</span>
+            </div>
         </div>
+
+        {/* Feedback */}
         <div className="mb-6 text-center">
           {score === total && total > 0 ? (
-            <span className="text-green-400 font-semibold text-lg">Perfect! 🎉</span>
+            <span className="text-green-600 font-semibold text-lg">Perfect! 🎉</span>
           ) : score > total / 2 ? (
-            <span className="text-white font-semibold text-lg">Great job!</span>
+            <span className="text-purple-800 font-semibold text-lg">Great job!</span>
           ) : (
-            <span className="text-red-400 font-semibold text-lg">Keep practicing!</span>
+            <span className="text-red-600 font-semibold text-lg">Keep practicing!</span>
           )}
         </div>
+
+        {/* Review Answers */}
         <div className="w-full">
-          <h2 className="text-xl font-semibold mb-4 text-left text-white">Review Your Answers</h2>
+          <h2 className="text-xl font-semibold mb-4 text-left text-purple-900">
+            Review Your Answers
+          </h2>
           <ol className="space-y-6">
             {questions.map((q, idx) => {
               const userAnswer = userAnswers[idx];
               const isCorrect = userAnswer === q.correctAnswer;
               return (
-                <li key={idx} className={`border-l-4 pl-4 pb-4 ${isCorrect ? 'border-green-500 bg-zinc-800' : 'border-red-500 bg-zinc-800'} rounded mb-2`}>
-                  <div className="font-medium mb-1 text-white">Q{idx + 1}: {q.question}</div>
+                <li
+                  key={idx}
+                  className={`border-l-4 pl-4 pb-4 rounded mb-2 ${
+                    isCorrect
+                      ? "border-green-500 bg-purple-100"
+                      : "border-red-500 bg-purple-50"
+                  }`}
+                >
+                  <div className="font-medium mb-1 text-purple-900">
+                    Q{idx + 1}: {q.question}
+                  </div>
                   <div className="ml-2">
                     <div className="mb-1">
-                      <span className="font-semibold text-zinc-300">Your answer: </span>
-                      <span className={
-                        isCorrect
-                          ? 'text-green-400 font-semibold'
-                          : 'text-red-400 font-semibold'
-                      }>
-                        {userAnswer || <span className="italic text-zinc-500">No answer</span>}
+                      <span className="font-semibold text-purple-800">
+                        Your answer:{" "}
+                      </span>
+                      <span
+                        className={
+                          isCorrect
+                            ? "text-green-600 font-semibold"
+                            : "text-red-600 font-semibold"
+                        }
+                      >
+                        {userAnswer || (
+                          <span className="italic text-purple-500">
+                            No answer
+                          </span>
+                        )}
                       </span>
                       {isCorrect && <span className="ml-2">✔️</span>}
                     </div>
                     {!isCorrect && (
                       <div>
-                        <span className="font-semibold text-zinc-300">Correct answer: </span>
-                        <span className="text-green-400 font-semibold">{q.correctAnswer}</span>
+                        <span className="font-semibold text-purple-800">
+                          Correct answer:{" "}
+                        </span>
+                        <span className="text-green-600 font-semibold">
+                          {q.correctAnswer}
+                        </span>
                       </div>
                     )}
                     <div className="mt-2">
-                      <span className="font-semibold text-zinc-300">Options: </span>
-                      <span className="text-zinc-200">{q.options.join(', ')}</span>
+                      <span className="font-semibold text-purple-800">
+                        Options:{" "}
+                      </span>
+                      <span className="text-purple-700">
+                        {q.options.join(", ")}
+                      </span>
                     </div>
                   </div>
                 </li>
@@ -82,9 +119,11 @@ const ResultPage = () => {
             })}
           </ol>
         </div>
+
+        {/* Restart Button */}
         <div className="flex justify-center mt-8">
           <button
-            className="bg-white text-black px-6 py-2 rounded shadow hover:bg-zinc-200 transition font-semibold"
+            className="bg-gradient-to-r from-purple-700 to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:from-indigo-600 hover:to-purple-600 transition font-bold"
             onClick={handleRestart}
           >
             Restart Quiz

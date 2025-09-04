@@ -1,7 +1,7 @@
-
 import React, { useState } from "react";
 import { SiQuizlet } from "react-icons/si";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
 
 const categories = [
   { value: "18", label: "Computer Science" },
@@ -28,59 +28,80 @@ const HomePages = () => {
   }
 
   return (
-    <div className="min-h-screen bg-black flex flex-col justify-center items-center py-8 px-2">
-      <div className="w-full max-w-md bg-zinc-100 rounded-4xl shadow-lg p-8 border border-zinc-800 flex flex-col items-center">
-        <div className="flex justify-center items-center gap-2 mb-4">
-          <SiQuizlet className="text-3xl text-black" />
-          <h1 className="text-2xl font-bold text-black tracking-tight">Quiz App</h1>
-        </div>
-        <h2 className="text-lg text-zinc-900 mb-6 text-center">Welcome! Choose your quiz settings below:</h2>
+    <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-700 to-indigo-900 flex flex-col justify-center items-center py-8 px-2">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 40 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="w-full max-w-md bg-gradient-to-br from-purple-200 via-purple-100 to-purple-300 rounded-3xl shadow-2xl p-8 border border-purple-400 flex flex-col items-center"
+      >
+        <motion.div
+          initial={{ rotate: -15, opacity: 0 }}
+          animate={{ rotate: 0, opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="flex justify-center items-center gap-2 mb-4"
+        >
+          <SiQuizlet className="text-4xl text-purple-900 drop-shadow-lg" />
+          <h1 className="text-3xl font-extrabold text-purple-900 tracking-tight">
+            Quiz App
+          </h1>
+        </motion.div>
+
+        <h2 className="text-lg text-purple-800 mb-6 text-center">
+          Welcome! Choose your quiz settings below:
+        </h2>
 
         <div className="w-full mb-4">
-          <label className="block text-zinc-900 mb-1 font-medium">Category</label>
+          <label className="block text-purple-900 mb-1 font-semibold">Category</label>
           <select
-            className="w-full p-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 focus:outline-none"
+            className="w-full p-2 rounded-xl bg-transparent text-purple-900 border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             value={category}
-            onChange={e => setCategory(e.target.value)}
+            onChange={(e) => setCategory(e.target.value)}
           >
-            {categories.map(cat => (
-              <option key={cat.value} value={cat.value}>{cat.label}</option>
+            {categories.map((cat) => (
+              <option key={cat.value} value={cat.value}>
+                {cat.label}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="w-full mb-4">
-          <label className="block text-zinc-900 mb-1 font-medium">Difficulty</label>
+          <label className="block text-purple-900 mb-1 font-semibold">Difficulty</label>
           <select
-            className="w-full p-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 focus:outline-none"
+            className="w-full p-2 rounded-xl bg-transparent text-purple-900 border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             value={difficulty}
-            onChange={e => setDifficulty(e.target.value)}
+            onChange={(e) => setDifficulty(e.target.value)}
           >
-            {difficulties.map(diff => (
-              <option key={diff.value} value={diff.value}>{diff.label}</option>
+            {difficulties.map((diff) => (
+              <option key={diff.value} value={diff.value}>
+                {diff.label}
+              </option>
             ))}
           </select>
         </div>
 
         <div className="w-full mb-6">
-          <label className="block text-zinc-900 mb-1 font-medium">Number of Questions</label>
+          <label className="block text-purple-900 mb-1 font-semibold">Number of Questions</label>
           <input
             type="number"
             min={1}
             max={20}
-            className="w-full p-2 rounded-xl bg-zinc-800 text-white border border-zinc-700 focus:outline-none"
+            className="w-full p-2 rounded-xl bg-transparent text-purple-900 border border-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 transition"
             value={amount}
-            onChange={e => setAmount(Number(e.target.value))}
+            onChange={(e) => setAmount(Number(e.target.value))}
           />
         </div>
 
-        <button
+        <motion.button
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
           onClick={startQuiz}
-          className="bg-zinc-900 text-white px-6 py-2 rounded-xl shadow hover:text-zinc-900 hover:bg-zinc-200 transition font-semibold w-full text-lg"
+          className="bg-gradient-to-r from-purple-700 to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:from-indigo-600 hover:to-purple-600 transition font-bold w-full text-lg"
         >
           Start Quiz
-        </button>
-      </div>
+        </motion.button>
+      </motion.div>
     </div>
   );
 };

@@ -6,7 +6,7 @@ const ProgressBar = ({ current, total }) => {
 	return (
 		<div className="w-full bg-gray-200 rounded h-2 mb-4">
 			<div
-				className="bg-blue-500 h-2 rounded"
+				className="bg-purple-900 h-2 rounded"
 				style={{ width: `${percent}%`, transition: 'width 0.3s' }}
 			></div>
 			<div className="text-xs text-center mt-1">{current + 1} / {total} questions</div>
